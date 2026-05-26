@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y \
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 🔥 IMPORTANT FIX
-COPY backend/ /app
+# 🔥 IMPORTANT FIX (ROOT PROJECT)
+COPY . /app
 
 RUN composer install \
     --no-dev \
@@ -24,9 +24,7 @@ RUN composer install \
     --no-progress \
     --ignore-platform-reqs
 
-RUN chmod +x /app/start.sh \
-    && mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
+RUN chmod +x /app/start.sh
 
 ENV PORT=10000
 EXPOSE 10000
