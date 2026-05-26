@@ -4,10 +4,18 @@ import { ArrowRight, Truck, ShieldCheck, RotateCcw, Sparkles } from 'lucide-reac
 import api from '../lib/api'
 import ProductCard from '../components/ProductCard'
 
+const heroSlides = [
+  'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=2000&q=80',
+  'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=2000&q=80',
+  'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=2000&q=80',
+  'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=2000&q=80',
+]
+
 export default function Home() {
   const [featured, setFeatured] = useState([])
   const [newest, setNewest] = useState([])
   const [cats, setCats] = useState([])
+  const [slide, setSlide] = useState(0)
 
   useEffect(() => {
     api.get('/products/featured').then((r) => setFeatured(r.data)).catch(() => {})
@@ -15,16 +23,30 @@ export default function Home() {
     api.get('/categories').then((r) => setCats(r.data)).catch(() => {})
   }, [])
 
+  // Auto-rotate hero background every 6s
+  useEffect(() => {
+    const t = setInterval(() => setSlide((s) => (s + 1) % heroSlides.length), 6000)
+    return () => clearInterval(t)
+  }, [])
+
   return (
     <div>
       {/* ——————————————————————————— Hero */}
       <section className="relative overflow-hidden bg-luxe-dark text-white">
+        {/* Background slideshow with crossfade */}
         <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=2000&q=80"
-            className="h-full w-full object-cover opacity-40 sm:opacity-55"
-            alt=""
-          />
+          {heroSlides.map((src, i) => (
+            <img
+              key={src}
+              src={src}
+              alt=""
+              aria-hidden="true"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              className={`absolute inset-0 h-full w-full object-cover opacity-40 transition-opacity duration-[1400ms] ease-in-out sm:opacity-55 ${
+                i === slide ? 'opacity-40 sm:opacity-55' : '!opacity-0'
+              }`}
+            />
+          ))}
           {/* Mobile: heavy uniform darken so heading is always legible */}
           <div className="absolute inset-0 bg-ink-900/65 md:hidden" />
           {/* Desktop: directional gradient from solid dark to clear image */}
@@ -32,21 +54,22 @@ export default function Home() {
           {/* Extra bottom gradient on mobile for button-area contrast */}
           <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink-900 to-transparent md:hidden" />
         </div>
-        <div className="container-narrow relative grid min-h-[78vh] items-center py-16 sm:py-20 lg:min-h-[85vh]">
-          <div className="max-w-2xl animate-slide-up">
+
+        <div className="container-narrow relative grid min-h-[70vh] items-center py-14 sm:py-18 lg:min-h-[78vh]">
+          <div className="max-w-xl animate-slide-up">
             <span className="eyebrow text-accent-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
               New Season · Spring '26
             </span>
-            <h1 className="mt-5 hero-title text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]">
+            <h1 className="mt-4 font-display font-medium leading-[1.05] tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] text-[clamp(2rem,5.5vw+0.25rem,4.5rem)]">
               Considered<br />
               essentials,<br />
               <span className="italic text-accent-300">crafted to last.</span>
             </h1>
-            <p className="mt-6 max-w-md text-base leading-relaxed text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)] sm:text-lg sm:text-ink-200 sm:drop-shadow-none">
+            <p className="mt-5 max-w-md text-sm leading-relaxed text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)] sm:text-base sm:text-ink-200 sm:drop-shadow-none">
               Premium clothing made from natural materials, designed with quiet confidence
               and built for everyday refinement.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3 sm:mt-10">
+            <div className="mt-7 flex flex-wrap gap-3 sm:mt-9">
               <Link to="/shop" className="btn-accent">
                 Shop the collection <ArrowRight className="h-4 w-4" />
               </Link>
@@ -57,6 +80,20 @@ export default function Home() {
                 For her
               </Link>
             </div>
+          </div>
+
+          {/* Slide indicators */}
+          <div className="pointer-events-auto absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 gap-2 sm:left-auto sm:right-10 sm:translate-x-0">
+            {heroSlides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setSlide(i)}
+                aria-label={`Show slide ${i + 1}`}
+                className={`h-1.5 rounded-full transition-all duration-500 ${
+                  i === slide ? 'w-8 bg-accent-300' : 'w-4 bg-white/40 hover:bg-white/70'
+                }`}
+              />
+            ))}
           </div>
         </div>
       </section>
