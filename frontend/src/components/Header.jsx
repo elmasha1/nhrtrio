@@ -42,13 +42,14 @@ export default function Header() {
       </div>
 
       <div className="container-narrow flex h-16 items-center justify-between gap-2 sm:h-20 sm:gap-4">
-        {/* Mobile: menu button */}
+        {/* Mobile: menu toggle */}
         <button
           className="tap-target -ml-2 grid place-items-center lg:hidden"
-          onClick={() => setOpen(true)}
-          aria-label="Open menu"
+          onClick={() => setOpen((v) => !v)}
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
         >
-          <Menu className="h-5 w-5" />
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
 
         {/* Brand wordmark — sized for mobile-first */}
@@ -186,72 +187,62 @@ export default function Header() {
         </form>
       )}
 
-      {/* Mobile drawer */}
+      {/* Mobile dropdown menu */}
       {open && (
-        <div className="fixed inset-0 z-[60] bg-black/55 lg:hidden" onClick={() => setOpen(false)}>
+        <>
+          {/* Backdrop, sits below the dropdown but above page content */}
           <div
-            className="absolute left-0 top-0 flex h-full w-[85%] max-w-sm flex-col overflow-y-auto bg-white p-6 text-ink-900 shadow-2xl safe-bottom"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 z-[55] bg-black/40 lg:hidden"
+            onClick={() => setOpen(false)}
+          />
+          {/* Dropdown panel — drops from top, sits flush under the header */}
+          <div
+            className="absolute left-0 right-0 top-full z-[60] max-h-[calc(100vh-5rem)] overflow-y-auto border-t border-ink-100 bg-white text-ink-900 shadow-2xl safe-bottom lg:hidden"
             style={{ backgroundColor: '#ffffff' }}
           >
-            <div className="mb-6 flex items-center justify-between">
-              <span className="font-display text-2xl font-semibold tracking-tight text-ink-900">
-                NHR<span className="mx-1 text-accent-500">·</span>Trio
-              </span>
-              <button
-                onClick={() => setOpen(false)}
-                className="tap-target grid place-items-center rounded-full text-ink-900 hover:bg-ink-100"
-                aria-label="Close menu"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
+            <div className="container-narrow py-4">
+              <nav className="flex flex-col">
+                {navItems.map((n) => (
+                  <Link
+                    key={n.to}
+                    to={n.to}
+                    onClick={() => setOpen(false)}
+                    className="block border-b border-ink-100 py-3.5 font-display text-xl font-medium tracking-tight text-ink-900 hover:text-accent-600"
+                  >
+                    {n.label}
+                  </Link>
+                ))}
+              </nav>
 
-            <nav className="flex flex-col">
-              {navItems.map((n) => (
+              <div className="mt-5 grid grid-cols-2 gap-2 text-sm">
                 <Link
-                  key={n.to}
-                  to={n.to}
-                  onClick={() => setOpen(false)}
-                  className="block border-b border-ink-100 py-4 font-display text-2xl font-medium tracking-tight text-ink-900 hover:text-accent-600"
-                >
-                  {n.label}
-                </Link>
-              ))}
-            </nav>
-
-            <div className="mt-6 grid grid-cols-2 gap-2 text-sm">
-              <Link
-                to="/track"
-                onClick={() => setOpen(false)}
-                className="rounded-xl border border-ink-200 px-3 py-3 text-center font-semibold text-ink-900 hover:bg-ink-100"
-              >
-                Track order
-              </Link>
-              {user ? (
-                <Link
-                  to="/account"
+                  to="/track"
                   onClick={() => setOpen(false)}
                   className="rounded-xl border border-ink-200 px-3 py-3 text-center font-semibold text-ink-900 hover:bg-ink-100"
                 >
-                  My account
+                  Track order
                 </Link>
-              ) : (
-                <Link
-                  to="/login"
-                  onClick={() => setOpen(false)}
-                  className="rounded-xl bg-ink-900 px-3 py-3 text-center font-semibold text-white hover:bg-ink-800"
-                >
-                  Sign in
-                </Link>
-              )}
+                {user ? (
+                  <Link
+                    to="/account"
+                    onClick={() => setOpen(false)}
+                    className="rounded-xl border border-ink-200 px-3 py-3 text-center font-semibold text-ink-900 hover:bg-ink-100"
+                  >
+                    My account
+                  </Link>
+                ) : (
+                  <Link
+                    to="/login"
+                    onClick={() => setOpen(false)}
+                    className="rounded-xl bg-ink-900 px-3 py-3 text-center font-semibold text-white hover:bg-ink-800"
+                  >
+                    Sign in
+                  </Link>
+                )}
+              </div>
             </div>
-
-            <p className="mt-auto pt-8 text-[11px] uppercase tracking-luxe text-ink-500">
-              NHR Trio · Premium clothing
-            </p>
           </div>
-        </div>
+        </>
       )}
     </header>
   )
