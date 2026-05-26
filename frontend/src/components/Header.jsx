@@ -166,12 +166,12 @@ export default function Header() {
       {/* Search drawer */}
       {searchOpen && (
         <div className="border-t border-ink-100 bg-gradient-to-b from-white to-ink-50/50">
-          <form onSubmit={submitSearch} className="container-narrow py-5 sm:py-6">
+          <form onSubmit={submitSearch} className="container-narrow py-3 sm:py-4">
             <label
               htmlFor="header-search"
-              className="group flex items-center gap-3 rounded-full border border-ink-200 bg-white px-5 py-3.5 shadow-soft transition focus-within:border-accent-400 focus-within:shadow-ring sm:px-6"
+              className="group mx-auto flex max-w-2xl items-center gap-2 rounded-full border border-ink-200 bg-white px-4 py-2 shadow-soft transition focus-within:border-accent-400 focus-within:shadow-ring"
             >
-              <Search className="h-5 w-5 flex-shrink-0 text-ink-400 transition group-focus-within:text-accent-500" />
+              <Search className="h-4 w-4 flex-shrink-0 text-ink-400 transition group-focus-within:text-accent-500" />
               <input
                 id="header-search"
                 autoFocus
@@ -179,33 +179,33 @@ export default function Header() {
                 onChange={(e) => setQ(e.target.value)}
                 onKeyDown={(e) => e.key === 'Escape' && setSearchOpen(false)}
                 placeholder="Search the collection…"
-                className="flex-1 bg-transparent text-base text-ink-900 outline-none placeholder:text-ink-400 placeholder:font-light"
+                className="flex-1 bg-transparent text-sm text-ink-900 outline-none placeholder:text-ink-400 placeholder:font-light"
               />
               {q && (
                 <button
                   type="button"
                   onClick={() => setQ('')}
-                  className="grid h-6 w-6 flex-shrink-0 place-items-center rounded-full text-ink-400 hover:bg-ink-100 hover:text-ink-700"
+                  className="grid h-5 w-5 flex-shrink-0 place-items-center rounded-full text-ink-400 hover:bg-ink-100 hover:text-ink-700"
                   aria-label="Clear"
                 >
-                  <X className="h-3.5 w-3.5" />
+                  <X className="h-3 w-3" />
                 </button>
               )}
-              <span className="hidden flex-shrink-0 rounded-md border border-ink-200 bg-ink-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-luxe text-ink-500 sm:inline-block">
+              <span className="hidden flex-shrink-0 rounded border border-ink-200 bg-ink-50 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-luxe text-ink-500 sm:inline-block">
                 Enter
               </span>
               <button
                 type="button"
                 onClick={() => setSearchOpen(false)}
-                className="tap-target grid flex-shrink-0 place-items-center rounded-full text-ink-400 hover:bg-ink-100 hover:text-ink-700"
+                className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-full text-ink-400 hover:bg-ink-100 hover:text-ink-700"
                 aria-label="Close search"
               >
-                <X className="h-4 w-4" />
+                <X className="h-3.5 w-3.5" />
               </button>
             </label>
 
             {/* Curated quick links */}
-            <div className="mt-4 flex flex-wrap items-center gap-2">
+            <div className="mx-auto mt-3 flex max-w-2xl flex-wrap items-center gap-1.5">
               <span className="text-[10px] font-semibold uppercase tracking-luxe text-ink-500">
                 Trending
               </span>
@@ -214,7 +214,7 @@ export default function Header() {
                   key={t}
                   type="button"
                   onClick={() => { setQ(t); nav(`/shop?search=${encodeURIComponent(t)}`); setSearchOpen(false) }}
-                  className="rounded-full border border-ink-200 bg-white px-3 py-1.5 text-xs font-medium text-ink-700 transition hover:border-accent-400 hover:text-ink-900"
+                  className="rounded-full border border-ink-200 bg-white px-2.5 py-1 text-[11px] font-medium text-ink-700 transition hover:border-accent-400 hover:text-ink-900"
                 >
                   {t}
                 </button>
