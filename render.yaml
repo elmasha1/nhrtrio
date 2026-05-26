@@ -1,0 +1,71 @@
+databases:
+  - name: nhrtrio-db
+    plan: free
+    databaseName: nhrtrio
+    user: nhrtrio
+
+services:
+  - type: web
+    name: nhrtrio-backend
+    runtime: docker
+    plan: free
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: APP_NAME
+        value: "NHR Trio"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_URL
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: LOG_CHANNEL
+        value: stack
+      - key: LOG_STACK
+        value: single
+      - key: LOG_LEVEL
+        value: info
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: nhrtrio-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: nhrtrio-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: nhrtrio-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: nhrtrio-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: nhrtrio-db
+          property: password
+      - key: DB_SSLMODE
+        value: require
+      - key: SESSION_DRIVER
+        value: cookie
+      - key: CACHE_STORE
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: BROADCAST_CONNECTION
+        value: log
+      - key: FILESYSTEM_DISK
+        value: public
+      - key: MAIL_MAILER
+        value: log
+      - key: SANCTUM_STATEFUL_DOMAINS
+        sync: false
