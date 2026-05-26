@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+php artisan package:discover --ansi || true
+
 php artisan config:clear || true
 php artisan route:clear || true
 
