@@ -9,8 +9,8 @@ services:
     name: nhrtrio-backend
     runtime: docker
     plan: free
-    rootDir: backend
-    dockerfilePath: backend/Dockerfile
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
     healthCheckPath: /api/v1/health
     envVars:
       - key: APP_NAME
