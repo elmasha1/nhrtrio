@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     unzip zip curl git \
     libzip-dev libpq-dev \
     libpng-dev libjpeg-dev libfreetype6-dev libwebp-dev \
-    libonig-dev libxml2-dev \
+    libonig-dev libxml2-dev libicu-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j$(nproc) \
         pdo pdo_mysql pdo_pgsql zip gd bcmath mbstring intl \
