@@ -4,6 +4,8 @@ set -e
 php artisan config:clear || true
 php artisan route:clear || true
 
+php artisan storage:link || true
+
 php artisan migrate --force
 php artisan db:seed --force || echo "Seeder skipped or failed (non-fatal)."
 

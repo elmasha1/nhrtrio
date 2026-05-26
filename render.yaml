@@ -67,5 +67,3 @@ services:
         value: public
       - key: MAIL_MAILER
         value: log
-      - key: SANCTUM_STATEFUL_DOMAINS
-        sync: false
