@@ -22,21 +22,27 @@ export default function Home() {
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=2000&q=80"
-            className="h-full w-full object-cover opacity-55"
+            className="h-full w-full object-cover opacity-40 sm:opacity-55"
             alt=""
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-ink-900 via-ink-900/80 to-ink-900/30 md:to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink-900/80 via-transparent to-transparent md:hidden" />
+          {/* Mobile: heavy uniform darken so heading is always legible */}
+          <div className="absolute inset-0 bg-ink-900/65 md:hidden" />
+          {/* Desktop: directional gradient from solid dark to clear image */}
+          <div className="absolute inset-0 hidden bg-gradient-to-r from-ink-900 via-ink-900/80 to-transparent md:block" />
+          {/* Extra bottom gradient on mobile for button-area contrast */}
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink-900 to-transparent md:hidden" />
         </div>
         <div className="container-narrow relative grid min-h-[78vh] items-center py-16 sm:py-20 lg:min-h-[85vh]">
           <div className="max-w-2xl animate-slide-up">
-            <span className="eyebrow text-accent-300">New Season · Spring '26</span>
-            <h1 className="mt-5 hero-title">
+            <span className="eyebrow text-accent-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+              New Season · Spring '26
+            </span>
+            <h1 className="mt-5 hero-title text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]">
               Considered<br />
               essentials,<br />
               <span className="italic text-accent-300">crafted to last.</span>
             </h1>
-            <p className="mt-6 max-w-md text-base leading-relaxed text-ink-200 sm:text-lg">
+            <p className="mt-6 max-w-md text-base leading-relaxed text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)] sm:text-lg sm:text-ink-200 sm:drop-shadow-none">
               Premium clothing made from natural materials, designed with quiet confidence
               and built for everyday refinement.
             </p>
@@ -46,7 +52,7 @@ export default function Home() {
               </Link>
               <Link
                 to="/shop/women"
-                className="btn border border-white/30 text-white hover:bg-white/10"
+                className="btn border border-white/40 bg-white/5 text-white backdrop-blur-sm hover:bg-white/15"
               >
                 For her
               </Link>

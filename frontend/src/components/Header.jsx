@@ -188,16 +188,21 @@ export default function Header() {
 
       {/* Mobile drawer */}
       {open && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)}>
+        <div className="fixed inset-0 z-[60] bg-black/55 lg:hidden" onClick={() => setOpen(false)}>
           <div
-            className="absolute left-0 top-0 flex h-full w-[85%] max-w-sm flex-col bg-white p-6 shadow-lux safe-bottom animate-slide-up"
+            className="absolute left-0 top-0 flex h-full w-[85%] max-w-sm flex-col overflow-y-auto bg-white p-6 text-ink-900 shadow-2xl safe-bottom"
             onClick={(e) => e.stopPropagation()}
+            style={{ backgroundColor: '#ffffff' }}
           >
-            <div className="mb-8 flex items-center justify-between">
-              <span className="font-display text-xl font-medium tracking-tight">
-                NHR<span className="mx-1 text-accent-400">·</span>Trio
+            <div className="mb-6 flex items-center justify-between">
+              <span className="font-display text-2xl font-semibold tracking-tight text-ink-900">
+                NHR<span className="mx-1 text-accent-500">·</span>Trio
               </span>
-              <button onClick={() => setOpen(false)} className="tap-target grid place-items-center" aria-label="Close">
+              <button
+                onClick={() => setOpen(false)}
+                className="tap-target grid place-items-center rounded-full text-ink-900 hover:bg-ink-100"
+                aria-label="Close menu"
+              >
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -208,7 +213,7 @@ export default function Header() {
                   key={n.to}
                   to={n.to}
                   onClick={() => setOpen(false)}
-                  className="block border-b border-ink-100 py-4 font-display text-xl tracking-tight text-ink-900"
+                  className="block border-b border-ink-100 py-4 font-display text-2xl font-medium tracking-tight text-ink-900 hover:text-accent-600"
                 >
                   {n.label}
                 </Link>
@@ -219,7 +224,7 @@ export default function Header() {
               <Link
                 to="/track"
                 onClick={() => setOpen(false)}
-                className="rounded-xl border border-ink-200 px-3 py-3 text-center font-medium hover:bg-ink-50"
+                className="rounded-xl border border-ink-200 px-3 py-3 text-center font-semibold text-ink-900 hover:bg-ink-100"
               >
                 Track order
               </Link>
@@ -227,7 +232,7 @@ export default function Header() {
                 <Link
                   to="/account"
                   onClick={() => setOpen(false)}
-                  className="rounded-xl border border-ink-200 px-3 py-3 text-center font-medium hover:bg-ink-50"
+                  className="rounded-xl border border-ink-200 px-3 py-3 text-center font-semibold text-ink-900 hover:bg-ink-100"
                 >
                   My account
                 </Link>
@@ -235,14 +240,14 @@ export default function Header() {
                 <Link
                   to="/login"
                   onClick={() => setOpen(false)}
-                  className="rounded-xl bg-ink-900 px-3 py-3 text-center font-medium text-white"
+                  className="rounded-xl bg-ink-900 px-3 py-3 text-center font-semibold text-white hover:bg-ink-800"
                 >
                   Sign in
                 </Link>
               )}
             </div>
 
-            <p className="mt-auto pt-8 text-[11px] uppercase tracking-luxe text-ink-400">
+            <p className="mt-auto pt-8 text-[11px] uppercase tracking-luxe text-ink-500">
               NHR Trio · Premium clothing
             </p>
           </div>
