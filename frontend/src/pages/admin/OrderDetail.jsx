@@ -27,30 +27,30 @@ export default function OrderDetail() {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-widest text-ink-500">Order</p>
-          <h1 className="font-mono text-2xl font-bold">{order.order_number}</h1>
-          <p className="mt-1 text-xs text-ink-500">{date(order.created_at)}</p>
+          <p className="eyebrow">Order</p>
+          <h1 className="mt-1 font-mono text-2xl font-bold sm:text-3xl">{order.order_number}</h1>
+          <p className="mt-1 text-[11px] uppercase tracking-luxe text-ink-500">{date(order.created_at)}</p>
         </div>
         <span className={`chip ${statusColor(order.status)}`}>{prettyStatus(order.status)}</span>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[1fr_360px]">
-        <div className="space-y-5">
-          <div className="card p-6">
-            <h2 className="font-semibold">Items</h2>
+      <div className="grid gap-5 lg:grid-cols-[1fr_360px] lg:gap-6">
+        <div className="space-y-5 min-w-0">
+          <div className="card p-5 sm:p-6">
+            <h2 className="font-display text-xl font-semibold">Items</h2>
             <div className="mt-3 space-y-3">
               {order.items.map((i) => (
-                <div key={i.id} className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-3">
-                    <img src={i.product_image} className="h-12 w-10 rounded-md object-cover" alt="" />
-                    <div>
-                      <div className="font-semibold">{i.product_name}</div>
-                      <div className="text-xs text-ink-500">{[i.size, i.color].filter(Boolean).join(' · ')} · Qty {i.quantity}</div>
+                <div key={i.id} className="flex items-center justify-between gap-3 text-sm">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <img src={i.product_image} className="h-12 w-10 flex-shrink-0 rounded-md object-cover" alt="" />
+                    <div className="min-w-0">
+                      <div className="truncate font-semibold">{i.product_name}</div>
+                      <div className="text-[11px] uppercase tracking-luxe text-ink-500">{[i.size, i.color].filter(Boolean).join(' · ')} · Qty {i.quantity}</div>
                     </div>
                   </div>
-                  <div className="font-semibold">{money(i.subtotal)}</div>
+                  <div className="font-semibold whitespace-nowrap">{money(i.subtotal)}</div>
                 </div>
               ))}
             </div>
@@ -60,17 +60,17 @@ export default function OrderDetail() {
               {Number(order.discount) > 0 && <div className="flex justify-between"><dt>Discount</dt><dd>−{money(order.discount)}</dd></div>}
               <div className="flex justify-between"><dt>Shipping</dt><dd>{money(order.shipping)}</dd></div>
               <div className="flex justify-between"><dt>Tax</dt><dd>{money(order.tax)}</dd></div>
-              <div className="flex justify-between text-base font-bold border-t border-ink-100 pt-2"><dt>Total</dt><dd>{money(order.total)}</dd></div>
+              <div className="flex justify-between font-display text-lg font-semibold border-t border-ink-100 pt-2"><dt>Total</dt><dd>{money(order.total)}</dd></div>
             </dl>
           </div>
 
-          <div className="card p-6">
-            <h2 className="font-semibold">Customer</h2>
+          <div className="card p-5 sm:p-6">
+            <h2 className="font-display text-xl font-semibold">Customer</h2>
             <p className="mt-2 text-sm">{order.user?.name || 'Guest'} · {order.user?.email || order.guest_email}</p>
           </div>
 
-          <div className="card p-6">
-            <h2 className="font-semibold">Shipping address</h2>
+          <div className="card p-5 sm:p-6">
+            <h2 className="font-display text-xl font-semibold">Shipping address</h2>
             {order.shipping_address && (
               <div className="mt-2 text-sm text-ink-700">
                 <div className="font-semibold">{order.shipping_address.full_name}</div>
@@ -82,16 +82,19 @@ export default function OrderDetail() {
             )}
           </div>
 
-          <div className="card p-6">
-            <h2 className="font-semibold">Timeline</h2>
+          <div className="card p-5 sm:p-6">
+            <h2 className="font-display text-xl font-semibold">Timeline</h2>
             <ol className="mt-3 space-y-3">
               {order.events?.map((e) => (
                 <li key={e.id} className="flex gap-3">
-                  <div className="mt-1 h-2.5 w-2.5 rounded-full bg-ink-900" />
-                  <div>
-                    <div className="text-sm font-semibold">{prettyStatus(e.status)}{e.location && <span className="ml-2 text-xs text-ink-500">({e.location})</span>}</div>
+                  <div className="mt-1.5 h-2.5 w-2.5 flex-shrink-0 rounded-full bg-ink-900" />
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold">
+                      {prettyStatus(e.status)}
+                      {e.location && <span className="ml-2 text-xs text-ink-500">({e.location})</span>}
+                    </div>
                     {e.description && <p className="text-sm text-ink-600">{e.description}</p>}
-                    <p className="text-xs text-ink-400">{date(e.occurred_at)}</p>
+                    <p className="text-[11px] uppercase tracking-luxe text-ink-400">{date(e.occurred_at)}</p>
                   </div>
                 </li>
               ))}
@@ -100,8 +103,8 @@ export default function OrderDetail() {
         </div>
 
         <aside className="space-y-5">
-          <form onSubmit={update} className="card p-6">
-            <h2 className="font-semibold">Update status</h2>
+          <form onSubmit={update} className="card p-5 sm:p-6">
+            <h2 className="font-display text-xl font-semibold">Update status</h2>
             <div className="mt-4 space-y-3">
               <div><div className="label">Status</div>
                 <select className="input" value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })}>

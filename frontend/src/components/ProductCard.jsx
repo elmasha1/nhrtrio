@@ -10,7 +10,7 @@ export default function ProductCard({ product, onWishlist }) {
   return (
     <div className="group relative animate-fade-in">
       <Link to={`/product/${product.slug}`} className="block">
-        <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-ink-100">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-ink-100 sm:rounded-2xl">
           <img
             src={img}
             alt={product.name}
@@ -18,30 +18,28 @@ export default function ProductCard({ product, onWishlist }) {
             loading="lazy"
           />
           {onSale && (
-            <span className="absolute left-3 top-3 rounded-full bg-rose-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+            <span className="absolute left-2 top-2 rounded-full bg-white/95 px-2.5 py-1 text-[9px] font-bold uppercase tracking-luxe text-ink-900 sm:left-3 sm:top-3">
               Sale
             </span>
           )}
           {product.stock < 5 && product.stock > 0 && (
-            <span className="absolute right-3 top-3 rounded-full bg-amber-500/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+            <span className="absolute right-2 top-2 rounded-full bg-accent-400 px-2.5 py-1 text-[9px] font-bold uppercase tracking-luxe text-ink-900 sm:right-3 sm:top-3">
               Low stock
             </span>
           )}
           {product.stock === 0 && (
-            <span className="absolute right-3 top-3 rounded-full bg-ink-900 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+            <span className="absolute right-2 top-2 rounded-full bg-ink-900 px-2.5 py-1 text-[9px] font-bold uppercase tracking-luxe text-white sm:right-3 sm:top-3">
               Sold out
             </span>
           )}
         </div>
-        <div className="mt-3 px-1">
-          <div className="flex items-start justify-between gap-2">
-            <h3 className="text-sm font-semibold leading-snug line-clamp-1">{product.name}</h3>
-          </div>
-          <p className="mt-0.5 text-xs text-ink-500">{product.category?.name}</p>
-          <div className="mt-2 flex items-center justify-between">
-            <div className="flex items-baseline gap-2">
-              <span className="text-sm font-bold text-ink-900">{money(product.price)}</span>
-              {onSale && <span className="text-xs text-ink-400 line-through">{money(product.compare_price)}</span>}
+        <div className="mt-3 px-0.5 sm:mt-4">
+          <h3 className="font-display text-base font-medium leading-snug line-clamp-1 sm:text-lg">{product.name}</h3>
+          <p className="mt-0.5 text-[11px] uppercase tracking-luxe text-ink-500">{product.category?.name}</p>
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <div className="flex items-baseline gap-2 min-w-0">
+              <span className="truncate text-sm font-semibold text-ink-900">{money(product.price)}</span>
+              {onSale && <span className="truncate text-xs text-ink-400 line-through">{money(product.compare_price)}</span>}
             </div>
             {product.rating_avg > 0 && <Stars value={product.rating_avg} size={12} />}
           </div>
@@ -50,7 +48,8 @@ export default function ProductCard({ product, onWishlist }) {
       {onWishlist && (
         <button
           onClick={(e) => { e.preventDefault(); onWishlist(product) }}
-          className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-white/90 opacity-0 backdrop-blur transition group-hover:opacity-100 hover:bg-white"
+          aria-label="Save to wishlist"
+          className="tap-target absolute right-2 top-2 grid place-items-center rounded-full bg-white/95 opacity-100 backdrop-blur transition hover:bg-white sm:right-3 sm:top-3 sm:opacity-0 sm:group-hover:opacity-100"
         >
           <Heart className="h-4 w-4" />
         </button>

@@ -20,43 +20,43 @@ export default function OrderDetail() {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-widest text-ink-500">Order</p>
-          <h2 className="font-mono text-2xl font-bold">{order.order_number}</h2>
-          <p className="mt-1 text-xs text-ink-500">{date(order.created_at)}</p>
+          <p className="eyebrow">Order</p>
+          <h2 className="mt-1 font-mono text-2xl font-bold sm:text-3xl">{order.order_number}</h2>
+          <p className="mt-1 text-[11px] uppercase tracking-luxe text-ink-500">{date(order.created_at)}</p>
         </div>
         <span className={`chip ${statusColor(order.status)}`}>{prettyStatus(order.status)}</span>
       </div>
 
-      <div className="card p-6">
-        <h3 className="font-semibold">Items</h3>
+      <div className="card p-5 sm:p-6">
+        <h3 className="font-display text-xl font-semibold">Items</h3>
         <div className="mt-4 space-y-3">
           {order.items.map((i) => (
             <div key={i.id} className="flex items-center justify-between gap-3 text-sm">
-              <div className="flex items-center gap-3">
-                <img src={i.product_image} className="h-14 w-12 rounded-md object-cover" alt="" />
-                <div>
-                  <div className="font-semibold">{i.product_name}</div>
-                  <div className="text-xs text-ink-500">{[i.size, i.color].filter(Boolean).join(' · ')} · Qty {i.quantity}</div>
+              <div className="flex min-w-0 items-center gap-3">
+                <img src={i.product_image} className="h-14 w-12 flex-shrink-0 rounded-md object-cover" alt="" />
+                <div className="min-w-0">
+                  <div className="truncate font-semibold">{i.product_name}</div>
+                  <div className="text-[11px] uppercase tracking-luxe text-ink-500">{[i.size, i.color].filter(Boolean).join(' · ')} · Qty {i.quantity}</div>
                 </div>
               </div>
-              <div className="font-semibold">{money(i.subtotal)}</div>
+              <div className="font-semibold whitespace-nowrap">{money(i.subtotal)}</div>
             </div>
           ))}
         </div>
         <hr className="my-4 border-ink-100" />
-        <dl className="space-y-1 text-sm">
+        <dl className="space-y-1.5 text-sm">
           <div className="flex justify-between"><dt>Subtotal</dt><dd>{money(order.subtotal)}</dd></div>
           {Number(order.discount) > 0 && <div className="flex justify-between text-emerald-700"><dt>Discount</dt><dd>−{money(order.discount)}</dd></div>}
           <div className="flex justify-between"><dt>Shipping</dt><dd>{Number(order.shipping) > 0 ? money(order.shipping) : 'Free'}</dd></div>
           <div className="flex justify-between"><dt>Tax</dt><dd>{money(order.tax)}</dd></div>
-          <div className="flex justify-between text-base font-bold pt-2 border-t border-ink-100"><dt>Total</dt><dd>{money(order.total)}</dd></div>
+          <div className="flex justify-between font-display text-lg font-semibold pt-2 border-t border-ink-100"><dt>Total</dt><dd>{money(order.total)}</dd></div>
         </dl>
       </div>
 
-      <div className="card p-6">
-        <h3 className="font-semibold">Shipping</h3>
+      <div className="card p-5 sm:p-6">
+        <h3 className="font-display text-xl font-semibold">Shipping</h3>
         {order.shipping_address && (
           <div className="mt-2 text-sm text-ink-700">
             <div className="font-semibold">{order.shipping_address.full_name}</div>

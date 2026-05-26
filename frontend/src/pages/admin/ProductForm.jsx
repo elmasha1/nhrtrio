@@ -49,12 +49,12 @@ export default function ProductForm() {
 
   return (
     <form onSubmit={submit} className="space-y-5">
-      <h1 className="text-3xl font-bold">{id ? 'Edit product' : 'New product'}</h1>
+      <h1 className="display-2">{id ? 'Edit product' : 'New product'}</h1>
 
-      <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
-        <div className="space-y-5">
-          <div className="card p-6">
-            <h2 className="font-semibold">Basic info</h2>
+      <div className="grid gap-5 lg:grid-cols-[1fr_320px] lg:gap-6">
+        <div className="space-y-5 min-w-0">
+          <div className="card p-5 sm:p-6">
+            <h2 className="font-display text-xl font-semibold">Basic info</h2>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="sm:col-span-2"><div className="label">Name</div><input className="input" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required /></div>
               <div><div className="label">SKU</div><input className="input" value={form.sku || ''} onChange={(e) => setForm({ ...form, sku: e.target.value })} /></div>
@@ -69,8 +69,8 @@ export default function ProductForm() {
             </div>
           </div>
 
-          <div className="card p-6">
-            <h2 className="font-semibold">Variants</h2>
+          <div className="card p-5 sm:p-6">
+            <h2 className="font-display text-xl font-semibold">Variants</h2>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div><div className="label">Sizes (comma-separated)</div><input className="input" value={form.sizes} onChange={(e) => setForm({ ...form, sizes: e.target.value })} placeholder="XS,S,M,L,XL" /></div>
               <div><div className="label">Colors (comma-separated)</div><input className="input" value={form.colors} onChange={(e) => setForm({ ...form, colors: e.target.value })} placeholder="Black,Ivory,Navy" /></div>
@@ -83,16 +83,16 @@ export default function ProductForm() {
             </div>
           </div>
 
-          <div className="card p-6">
-            <h2 className="font-semibold">Images</h2>
-            <p className="text-xs text-ink-500">Paste one image URL per line. The first image is the cover.</p>
+          <div className="card p-5 sm:p-6">
+            <h2 className="font-display text-xl font-semibold">Images</h2>
+            <p className="mt-1 text-xs text-ink-500">Paste one image URL per line. The first image is the cover.</p>
             <textarea rows={5} className="input mt-3 resize-none font-mono text-xs" value={form.images} onChange={(e) => setForm({ ...form, images: e.target.value })} placeholder="https://..." />
           </div>
         </div>
 
         <aside className="space-y-5">
-          <div className="card p-6">
-            <h2 className="font-semibold">Pricing & stock</h2>
+          <div className="card p-5 sm:p-6">
+            <h2 className="font-display text-xl font-semibold">Pricing &amp; stock</h2>
             <div className="mt-4 space-y-3">
               <div><div className="label">Price</div><input type="number" step="0.01" className="input" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} required /></div>
               <div><div className="label">Compare-at price</div><input type="number" step="0.01" className="input" value={form.compare_price || ''} onChange={(e) => setForm({ ...form, compare_price: e.target.value })} /></div>
@@ -100,8 +100,8 @@ export default function ProductForm() {
             </div>
           </div>
 
-          <div className="card p-6 space-y-3">
-            <h2 className="font-semibold">Status</h2>
+          <div className="card p-5 sm:p-6 space-y-3">
+            <h2 className="font-display text-xl font-semibold">Status</h2>
             <select className="input" value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })}>
               <option value="active">Active</option><option value="draft">Draft</option><option value="archived">Archived</option>
             </select>
@@ -110,7 +110,7 @@ export default function ProductForm() {
             </label>
           </div>
 
-          {err && <p className="rounded-lg bg-rose-50 p-3 text-sm text-rose-700">{err}</p>}
+          {err && <p className="rounded-2xl bg-rose-50 p-3 text-sm text-rose-700">{err}</p>}
           <button className="btn-primary w-full">{id ? 'Save changes' : 'Create product'}</button>
         </aside>
       </div>

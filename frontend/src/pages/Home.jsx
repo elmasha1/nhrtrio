@@ -17,32 +17,37 @@ export default function Home() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-ink-900 text-white">
+      {/* ——————————————————————————— Hero */}
+      <section className="relative overflow-hidden bg-luxe-dark text-white">
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=2000&q=80"
-            className="h-full w-full object-cover opacity-60"
+            className="h-full w-full object-cover opacity-55"
             alt=""
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-ink-900 via-ink-900/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink-900 via-ink-900/80 to-ink-900/30 md:to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-900/80 via-transparent to-transparent md:hidden" />
         </div>
-        <div className="container-narrow relative grid min-h-[78vh] items-center py-20">
+        <div className="container-narrow relative grid min-h-[78vh] items-center py-16 sm:py-20 lg:min-h-[85vh]">
           <div className="max-w-2xl animate-slide-up">
-            <span className="chip bg-white/10 text-white/80">New Season · Spring '26</span>
-            <h1 className="mt-5 font-display text-5xl font-bold leading-[1.05] sm:text-6xl md:text-7xl">
-              Considered<br/>essentials,<br/>
-              <span className="text-accent-300">crafted to last.</span>
+            <span className="eyebrow text-accent-300">New Season · Spring '26</span>
+            <h1 className="mt-5 hero-title">
+              Considered<br />
+              essentials,<br />
+              <span className="italic text-accent-300">crafted to last.</span>
             </h1>
-            <p className="mt-6 max-w-lg text-base text-ink-200">
+            <p className="mt-6 max-w-md text-base leading-relaxed text-ink-200 sm:text-lg">
               Premium clothing made from natural materials, designed with quiet confidence
               and built for everyday refinement.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-3 sm:mt-10">
               <Link to="/shop" className="btn-accent">
                 Shop the collection <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link to="/shop/women" className="btn btn-outline border-white/30 text-white hover:bg-white/10">
+              <Link
+                to="/shop/women"
+                className="btn border border-white/30 text-white hover:bg-white/10"
+              >
                 For her
               </Link>
             </div>
@@ -50,94 +55,138 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Value props */}
+      {/* ——————————————————————————— Value props */}
       <section className="border-b border-ink-100 bg-white">
-        <div className="container-narrow grid gap-6 py-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="container-narrow grid gap-6 py-8 sm:gap-8 sm:py-10 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: Truck, title: 'Free shipping', desc: 'On orders over $100' },
-            { icon: RotateCcw, title: '30-day returns', desc: 'No questions asked' },
-            { icon: ShieldCheck, title: 'Secure checkout', desc: 'Powered by Stripe' },
-            { icon: Sparkles, title: 'Premium materials', desc: 'Cashmere, silk, leather' },
+            { icon: Truck,       title: 'Complimentary shipping', desc: 'On orders over $100' },
+            { icon: RotateCcw,   title: '30-day returns',          desc: 'No questions asked' },
+            { icon: ShieldCheck, title: 'Secure checkout',         desc: 'Powered by Stripe' },
+            { icon: Sparkles,    title: 'Premium materials',       desc: 'Cashmere, silk, leather' },
           ].map((f) => (
-            <div key={f.title} className="flex items-center gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-ink-100">
+            <div key={f.title} className="flex items-center gap-4">
+              <div className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-full border border-ink-200 bg-ink-50">
                 <f.icon className="h-5 w-5 text-ink-700" />
               </div>
               <div>
-                <div className="text-sm font-semibold">{f.title}</div>
-                <div className="text-xs text-ink-500">{f.desc}</div>
+                <div className="text-sm font-semibold tracking-wide">{f.title}</div>
+                <div className="mt-0.5 text-xs text-ink-500">{f.desc}</div>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Categories grid */}
-      <section className="container-narrow py-16">
-        <div className="mb-8 flex items-end justify-between">
+      {/* ——————————————————————————— Categories */}
+      <section className="container-narrow py-14 sm:py-20">
+        <div className="mb-8 flex items-end justify-between gap-4 sm:mb-12">
           <div>
-            <h2 className="text-3xl font-bold">Shop by category</h2>
-            <p className="mt-1 text-sm text-ink-600">Curated edits for every occasion.</p>
+            <span className="eyebrow">The Edit</span>
+            <h2 className="mt-2 display-2">Shop by category</h2>
+            <p className="mt-2 max-w-md text-sm text-ink-600 sm:text-base">
+              Curated edits for every occasion.
+            </p>
           </div>
-          <Link to="/shop" className="hidden text-sm font-semibold underline-offset-4 hover:underline sm:inline">View all</Link>
+          <Link
+            to="/shop"
+            className="hidden text-[11px] font-semibold uppercase tracking-luxe underline-offset-4 hover:underline sm:inline"
+          >
+            View all
+          </Link>
         </div>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
           {cats.slice(0, 5).map((c, i) => (
             <Link
               key={c.id}
               to={`/shop/${c.slug}`}
-              className={`group relative overflow-hidden rounded-2xl ${i === 0 ? 'col-span-2 row-span-2 aspect-square md:aspect-[3/4]' : 'aspect-[3/4]'}`}
+              className={`group relative overflow-hidden rounded-2xl ${
+                i === 0
+                  ? 'col-span-2 row-span-2 aspect-[4/5] sm:aspect-square md:aspect-[3/4]'
+                  : 'aspect-[3/4]'
+              }`}
             >
-              <img src={c.image} alt={c.name} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4">
-                <div className="text-xs text-white/80">{c.products_count} products</div>
-                <div className="font-display text-xl font-semibold text-white sm:text-2xl">{c.name}</div>
+              <img
+                src={c.image}
+                alt={c.name}
+                className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
+              <div className="absolute inset-x-3 bottom-3 sm:inset-x-5 sm:bottom-5">
+                <div className="text-[10px] uppercase tracking-luxe text-white/75">{c.products_count} products</div>
+                <div className={`mt-1 font-display font-medium text-white ${i === 0 ? 'text-2xl sm:text-3xl' : 'text-lg sm:text-xl'}`}>
+                  {c.name}
+                </div>
               </div>
             </Link>
           ))}
         </div>
+
+        <Link
+          to="/shop"
+          className="mt-6 inline-flex text-[11px] font-semibold uppercase tracking-luxe underline-offset-4 hover:underline sm:hidden"
+        >
+          View all →
+        </Link>
       </section>
 
-      {/* Featured */}
-      <section className="container-narrow py-10">
-        <div className="mb-8 flex items-end justify-between">
+      {/* ——————————————————————————— Featured */}
+      <section className="container-narrow pb-14 sm:pb-20">
+        <div className="mb-8 flex items-end justify-between gap-4 sm:mb-12">
           <div>
-            <h2 className="text-3xl font-bold">Featured</h2>
-            <p className="mt-1 text-sm text-ink-600">Our most loved pieces this season.</p>
+            <span className="eyebrow">Most loved</span>
+            <h2 className="mt-2 display-2">Featured</h2>
+            <p className="mt-2 text-sm text-ink-600 sm:text-base">Our most loved pieces this season.</p>
           </div>
-          <Link to="/shop?featured=1" className="text-sm font-semibold underline-offset-4 hover:underline">All featured →</Link>
+          <Link
+            to="/shop?featured=1"
+            className="text-[11px] font-semibold uppercase tracking-luxe underline-offset-4 hover:underline"
+          >
+            All featured →
+          </Link>
         </div>
-        <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 md:grid-cols-3 lg:grid-cols-4">
           {featured.map((p) => <ProductCard key={p.id} product={p} />)}
         </div>
       </section>
 
-      {/* Big editorial */}
-      <section className="my-20 bg-ink-100">
-        <div className="container-narrow grid items-center gap-10 py-16 md:grid-cols-2">
-          <img src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=1400&q=70" className="aspect-[4/3] w-full rounded-2xl object-cover" alt="" />
+      {/* ——————————————————————————— Editorial */}
+      <section className="my-14 bg-ink-100 sm:my-20">
+        <div className="container-narrow grid items-center gap-8 py-14 sm:gap-12 sm:py-20 md:grid-cols-2">
+          <img
+            src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=1400&q=70"
+            className="aspect-[4/3] w-full rounded-2xl object-cover shadow-lux"
+            alt="Inside the NHR Trio atelier"
+            loading="lazy"
+          />
           <div>
-            <span className="chip">The Atelier</span>
-            <h2 className="mt-3 text-4xl font-bold">Designed in our atelier.<br/>Made to last a lifetime.</h2>
-            <p className="mt-4 text-ink-600">
+            <span className="eyebrow">The Atelier</span>
+            <h2 className="mt-3 display-2">
+              Designed in our atelier.<br />
+              <span className="italic">Made to last a lifetime.</span>
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-ink-700">
               Every piece is the result of careful sourcing, slow stitching, and an obsession
               with the small details that quietly make all the difference.
             </p>
-            <Link to="/shop" className="mt-6 inline-flex btn-primary">Explore the collection</Link>
+            <Link to="/shop" className="btn-primary mt-7 inline-flex">
+              Explore the collection
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* New arrivals */}
-      <section className="container-narrow pb-20">
-        <div className="mb-8 flex items-end justify-between">
+      {/* ——————————————————————————— New arrivals */}
+      <section className="container-narrow pb-20 sm:pb-28">
+        <div className="mb-8 flex items-end justify-between gap-4 sm:mb-12">
           <div>
-            <h2 className="text-3xl font-bold">New arrivals</h2>
-            <p className="mt-1 text-sm text-ink-600">Fresh off the line.</p>
+            <span className="eyebrow">Fresh in</span>
+            <h2 className="mt-2 display-2">New arrivals</h2>
+            <p className="mt-2 text-sm text-ink-600 sm:text-base">Fresh off the line.</p>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 md:grid-cols-3 lg:grid-cols-4">
           {newest.map((p) => <ProductCard key={p.id} product={p} />)}
         </div>
       </section>

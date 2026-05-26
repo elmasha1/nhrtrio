@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { ShoppingBag, User, Menu, X, Search, Heart, LayoutDashboard, LogOut } from 'lucide-react'
 import { useAuth } from '../store/auth'
@@ -21,6 +21,13 @@ export default function Header() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [q, setQ] = useState('')
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (open) document.body.style.overflow = 'hidden'
+    else document.body.style.overflow = ''
+    return () => { document.body.style.overflow = '' }
+  }, [open])
+
   const submitSearch = (e) => {
     e.preventDefault()
     if (q.trim()) nav(`/shop?search=${encodeURIComponent(q.trim())}`)
@@ -29,78 +36,125 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-ink-100 bg-white/85 backdrop-blur-xl">
-      <div className="bg-ink-900 text-center text-xs font-medium uppercase tracking-widest text-ink-100 py-2">
-        Free shipping on orders over $100 · 30-day returns
+      {/* Announcement strip */}
+      <div className="bg-ink-900 px-4 py-2 text-center text-[10px] font-medium uppercase tracking-luxe text-ink-100 sm:text-[11px]">
+        Complimentary shipping on orders over $100 · 30-day returns
       </div>
-      <div className="container-narrow flex h-16 items-center justify-between gap-6">
-        <button className="md:hidden" onClick={() => setOpen(true)} aria-label="Menu">
-          <Menu className="h-6 w-6" />
+
+      <div className="container-narrow flex h-16 items-center justify-between gap-2 sm:h-20 sm:gap-4">
+        {/* Mobile: menu button */}
+        <button
+          className="tap-target -ml-2 grid place-items-center lg:hidden"
+          onClick={() => setOpen(true)}
+          aria-label="Open menu"
+        >
+          <Menu className="h-5 w-5" />
         </button>
 
-        <Link to="/" className="font-display text-2xl font-bold tracking-tight">
-          NHR<span className="text-accent-400">·</span>Trio
+        {/* Brand wordmark — sized for mobile-first */}
+        <Link
+          to="/"
+          className="font-display text-xl font-medium tracking-tight sm:text-2xl lg:text-[1.7rem]"
+          aria-label="NHR Trio home"
+        >
+          NHR<span className="mx-1 text-accent-400">·</span>Trio
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6">
+        {/* Desktop nav */}
+        <nav className="hidden flex-1 items-center justify-center gap-7 lg:flex xl:gap-9">
           {navItems.map((n) => (
             <NavLink
               key={n.to}
               to={n.to}
               end={n.to === '/shop'}
               className={({ isActive }) =>
-                `text-sm font-medium transition ${isActive ? 'text-ink-900' : 'text-ink-600 hover:text-ink-900'}`
+                `relative text-[13px] font-medium tracking-wide transition ${
+                  isActive ? 'text-ink-900' : 'text-ink-600 hover:text-ink-900'
+                }`
               }
             >
-              {n.label}
+              {({ isActive }) => (
+                <>
+                  {n.label}
+                  <span
+                    className={`absolute -bottom-1.5 left-1/2 h-px w-4 -translate-x-1/2 bg-accent-400 transition-opacity ${
+                      isActive ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  />
+                </>
+              )}
             </NavLink>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <button onClick={() => setSearchOpen((v) => !v)} className="btn-ghost !px-2 !py-2" aria-label="Search">
+        {/* Actions */}
+        <div className="flex items-center gap-0.5 sm:gap-1">
+          <button
+            onClick={() => setSearchOpen((v) => !v)}
+            className="tap-target grid place-items-center text-ink-700 hover:text-ink-900"
+            aria-label="Search"
+          >
             <Search className="h-5 w-5" />
           </button>
 
           {user ? (
-            <div className="relative group">
-              <button className="btn-ghost !px-2 !py-2">
-                <User className="h-5 w-5" />
-              </button>
-              <div className="invisible absolute right-0 top-full w-56 origin-top-right opacity-0 transition group-hover:visible group-hover:opacity-100">
-                <div className="mt-2 card p-2">
-                  <div className="px-3 py-2 text-xs text-ink-500">Signed in as<br/><span className="font-semibold text-ink-900">{user.email}</span></div>
-                  <hr className="my-1 border-ink-100" />
-                  <Link to="/account" className="block rounded-lg px-3 py-2 text-sm hover:bg-ink-50">My account</Link>
-                  <Link to="/account/orders" className="block rounded-lg px-3 py-2 text-sm hover:bg-ink-50">Orders</Link>
-                  <Link to="/account/wishlist" className="block rounded-lg px-3 py-2 text-sm hover:bg-ink-50">Wishlist</Link>
-                  {user.role === 'admin' && (
-                    <Link to="/admin" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-ink-50">
-                      <LayoutDashboard className="h-4 w-4" /> Admin
-                    </Link>
-                  )}
-                  <hr className="my-1 border-ink-100" />
-                  <button
-                    onClick={async () => { await logout(); nav('/') }}
-                    className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-ink-50"
-                  >
-                    <LogOut className="h-4 w-4" /> Sign out
-                  </button>
+            <div className="relative hidden sm:block">
+              <div className="group relative">
+                <button className="tap-target grid place-items-center text-ink-700 hover:text-ink-900" aria-label="Account">
+                  <User className="h-5 w-5" />
+                </button>
+                <div className="invisible absolute right-0 top-full w-60 origin-top-right opacity-0 transition group-hover:visible group-hover:opacity-100">
+                  <div className="mt-2 card p-2">
+                    <div className="px-3 py-2 text-[11px] text-ink-500">
+                      Signed in as<br />
+                      <span className="font-semibold text-ink-900 normal-case tracking-normal">{user.email}</span>
+                    </div>
+                    <hr className="my-1 border-ink-100" />
+                    <Link to="/account" className="block rounded-lg px-3 py-2 text-sm hover:bg-ink-50">My account</Link>
+                    <Link to="/account/orders" className="block rounded-lg px-3 py-2 text-sm hover:bg-ink-50">Orders</Link>
+                    <Link to="/account/wishlist" className="block rounded-lg px-3 py-2 text-sm hover:bg-ink-50">Wishlist</Link>
+                    {user.role === 'admin' && (
+                      <Link to="/admin" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-ink-50">
+                        <LayoutDashboard className="h-4 w-4" /> Admin
+                      </Link>
+                    )}
+                    <hr className="my-1 border-ink-100" />
+                    <button
+                      onClick={async () => { await logout(); nav('/') }}
+                      className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-ink-50"
+                    >
+                      <LogOut className="h-4 w-4" /> Sign out
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           ) : (
-            <Link to="/login" className="btn-ghost !px-2 !py-2" aria-label="Sign in">
+            <Link
+              to="/login"
+              className="tap-target hidden place-items-center text-ink-700 hover:text-ink-900 sm:grid"
+              aria-label="Sign in"
+            >
               <User className="h-5 w-5" />
             </Link>
           )}
 
-          <Link to="/account/wishlist" className="btn-ghost !px-2 !py-2 hidden sm:inline-flex">
+          <Link
+            to="/account/wishlist"
+            className="tap-target hidden place-items-center text-ink-700 hover:text-ink-900 md:grid"
+            aria-label="Wishlist"
+          >
             <Heart className="h-5 w-5" />
           </Link>
-          <Link to="/cart" className="btn-ghost relative !px-2 !py-2">
+
+          <Link
+            to="/cart"
+            className="tap-target relative grid place-items-center text-ink-700 hover:text-ink-900"
+            aria-label={`Cart, ${cartCount} items`}
+          >
             <ShoppingBag className="h-5 w-5" />
             {cartCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-accent-400 px-1 text-[10px] font-bold text-white">
+              <span className="absolute right-1 top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-accent-400 px-1 text-[10px] font-bold text-ink-900">
                 {cartCount}
               </span>
             )}
@@ -108,6 +162,7 @@ export default function Header() {
         </div>
       </div>
 
+      {/* Search drawer */}
       {searchOpen && (
         <form onSubmit={submitSearch} className="border-t border-ink-100 bg-white">
           <div className="container-narrow flex items-center gap-3 py-3">
@@ -119,30 +174,77 @@ export default function Header() {
               placeholder="Search products, categories…"
               className="flex-1 bg-transparent text-sm outline-none placeholder:text-ink-400"
             />
-            <button type="button" onClick={() => setSearchOpen(false)} className="text-ink-400 hover:text-ink-700">
+            <button
+              type="button"
+              onClick={() => setSearchOpen(false)}
+              className="tap-target grid place-items-center text-ink-400 hover:text-ink-700"
+              aria-label="Close search"
+            >
               <X className="h-5 w-5" />
             </button>
           </div>
         </form>
       )}
 
+      {/* Mobile drawer */}
       {open && (
-        <div className="fixed inset-0 z-50 bg-black/40 md:hidden" onClick={() => setOpen(false)}>
-          <div className="absolute left-0 top-0 h-full w-72 bg-white p-6" onClick={(e) => e.stopPropagation()}>
-            <div className="mb-6 flex items-center justify-between">
-              <span className="font-display text-xl font-bold">NHR·Trio</span>
-              <button onClick={() => setOpen(false)}><X className="h-5 w-5" /></button>
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)}>
+          <div
+            className="absolute left-0 top-0 flex h-full w-[85%] max-w-sm flex-col bg-white p-6 shadow-lux safe-bottom animate-slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-8 flex items-center justify-between">
+              <span className="font-display text-xl font-medium tracking-tight">
+                NHR<span className="mx-1 text-accent-400">·</span>Trio
+              </span>
+              <button onClick={() => setOpen(false)} className="tap-target grid place-items-center" aria-label="Close">
+                <X className="h-5 w-5" />
+              </button>
             </div>
-            <nav className="space-y-2">
+
+            <nav className="flex flex-col">
               {navItems.map((n) => (
-                <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-ink-100">
+                <Link
+                  key={n.to}
+                  to={n.to}
+                  onClick={() => setOpen(false)}
+                  className="block border-b border-ink-100 py-4 font-display text-xl tracking-tight text-ink-900"
+                >
                   {n.label}
                 </Link>
               ))}
-              <hr className="my-3" />
-              <Link to="/track" onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2.5 text-sm hover:bg-ink-100">Track order</Link>
-              <Link to="/account" onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2.5 text-sm hover:bg-ink-100">My account</Link>
             </nav>
+
+            <div className="mt-6 grid grid-cols-2 gap-2 text-sm">
+              <Link
+                to="/track"
+                onClick={() => setOpen(false)}
+                className="rounded-xl border border-ink-200 px-3 py-3 text-center font-medium hover:bg-ink-50"
+              >
+                Track order
+              </Link>
+              {user ? (
+                <Link
+                  to="/account"
+                  onClick={() => setOpen(false)}
+                  className="rounded-xl border border-ink-200 px-3 py-3 text-center font-medium hover:bg-ink-50"
+                >
+                  My account
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={() => setOpen(false)}
+                  className="rounded-xl bg-ink-900 px-3 py-3 text-center font-medium text-white"
+                >
+                  Sign in
+                </Link>
+              )}
+            </div>
+
+            <p className="mt-auto pt-8 text-[11px] uppercase tracking-luxe text-ink-400">
+              NHR Trio · Premium clothing
+            </p>
           </div>
         </div>
       )}

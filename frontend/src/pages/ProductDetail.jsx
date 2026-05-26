@@ -24,7 +24,6 @@ export default function ProductDetail() {
   const [added, setAdded] = useState(false)
   const [tab, setTab] = useState('details')
 
-  // review form
   const [reviewForm, setReviewForm] = useState({ rating: 5, title: '', body: '' })
   const [submitting, setSubmitting] = useState(false)
 
@@ -71,22 +70,41 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="container-narrow py-10">
-      <nav className="mb-6 text-xs text-ink-500">
-        <Link to="/" className="hover:underline">Home</Link> / <Link to="/shop" className="hover:underline">Shop</Link>
-        {product.category && <> / <Link to={`/shop/${product.category.slug}`} className="hover:underline">{product.category.name}</Link></>}
-        / <span className="text-ink-800">{product.name}</span>
+    <div className="container-narrow py-6 sm:py-10">
+      <nav className="mb-5 text-[11px] uppercase tracking-luxe text-ink-500 sm:mb-7">
+        <Link to="/" className="hover:text-ink-900">Home</Link>
+        <span className="mx-2">/</span>
+        <Link to="/shop" className="hover:text-ink-900">Shop</Link>
+        {product.category && (
+          <>
+            <span className="mx-2">/</span>
+            <Link to={`/shop/${product.category.slug}`} className="hover:text-ink-900">{product.category.name}</Link>
+          </>
+        )}
+        <span className="mx-2">/</span>
+        <span className="text-ink-800 normal-case tracking-normal">{product.name}</span>
       </nav>
 
-      <div className="grid gap-10 lg:grid-cols-2">
+      <div className="grid gap-8 lg:grid-cols-2 lg:gap-14">
+        {/* Gallery */}
         <div>
-          <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-ink-100">
-            <img src={imgs[activeImg]?.url} alt={product.name} className="h-full w-full object-cover" />
+          <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-ink-100 shadow-soft">
+            <img
+              src={imgs[activeImg]?.url}
+              alt={product.name}
+              className="h-full w-full object-cover"
+            />
           </div>
           {imgs.length > 1 && (
-            <div className="mt-3 flex gap-3 overflow-x-auto scrollbar-hide">
+            <div className="-mx-1 mt-3 flex gap-3 overflow-x-auto px-1 scrollbar-hide sm:mt-4">
               {imgs.map((img, i) => (
-                <button key={i} onClick={() => setActiveImg(i)} className={`h-20 w-16 flex-shrink-0 overflow-hidden rounded-lg border ${i === activeImg ? 'border-ink-900' : 'border-ink-200'}`}>
+                <button
+                  key={i}
+                  onClick={() => setActiveImg(i)}
+                  className={`h-20 w-16 flex-shrink-0 overflow-hidden rounded-lg border-2 transition sm:h-24 sm:w-20 ${
+                    i === activeImg ? 'border-ink-900' : 'border-transparent hover:border-ink-300'
+                  }`}
+                >
                   <img src={img.url} className="h-full w-full object-cover" alt="" />
                 </button>
               ))}
@@ -94,31 +112,47 @@ export default function ProductDetail() {
           )}
         </div>
 
-        <div className="lg:sticky lg:top-24 lg:self-start">
-          <p className="text-xs uppercase tracking-widest text-ink-500">{product.category?.name}</p>
-          <h1 className="mt-2 text-3xl font-bold sm:text-4xl">{product.name}</h1>
-          <div className="mt-3 flex items-center gap-3">
+        {/* Info / actions */}
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <span className="eyebrow">{product.category?.name}</span>
+          <h1 className="mt-2 display-1">{product.name}</h1>
+          <div className="mt-3 flex flex-wrap items-center gap-3">
             <Stars value={product.rating_avg} size={14} />
-            <span className="text-xs text-ink-500">{product.rating_count} reviews · {product.sold_count} sold</span>
+            <span className="text-xs text-ink-500">
+              {product.rating_count} reviews · {product.sold_count} sold
+            </span>
           </div>
 
-          <div className="mt-5 flex items-baseline gap-3">
-            <span className="text-3xl font-bold">{money(product.price)}</span>
-            {onSale && <span className="text-lg text-ink-400 line-through">{money(product.compare_price)}</span>}
-            {onSale && <span className="chip bg-rose-100 text-rose-700">
-              Save {money(product.compare_price - product.price)}
-            </span>}
+          <div className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span className="font-display text-3xl font-semibold sm:text-4xl">{money(product.price)}</span>
+            {onSale && (
+              <span className="text-lg text-ink-400 line-through">{money(product.compare_price)}</span>
+            )}
+            {onSale && (
+              <span className="chip border-rose-200 bg-rose-50 text-rose-700">
+                Save {money(product.compare_price - product.price)}
+              </span>
+            )}
           </div>
 
-          <p className="mt-5 text-sm text-ink-600">{product.short_description}</p>
+          <p className="mt-5 text-base leading-relaxed text-ink-700">{product.short_description}</p>
 
           {product.colors?.length > 0 && (
             <div className="mt-6">
-              <div className="label">Color: <span className="text-ink-900 font-semibold normal-case">{color}</span></div>
+              <div className="label">
+                Color: <span className="font-semibold text-ink-900 normal-case tracking-normal">{color}</span>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {product.colors.map((c) => (
-                  <button key={c} onClick={() => setColor(c)}
-                    className={`rounded-full border px-4 py-1.5 text-xs font-medium ${color === c ? 'border-ink-900 bg-ink-900 text-white' : 'border-ink-200 hover:border-ink-400'}`}>
+                  <button
+                    key={c}
+                    onClick={() => setColor(c)}
+                    className={`rounded-full border px-4 py-2 text-xs font-medium transition ${
+                      color === c
+                        ? 'border-ink-900 bg-ink-900 text-white'
+                        : 'border-ink-200 text-ink-800 hover:border-ink-400'
+                    }`}
+                  >
                     {c}
                   </button>
                 ))}
@@ -127,12 +161,21 @@ export default function ProductDetail() {
           )}
 
           {product.sizes?.length > 0 && (
-            <div className="mt-4">
-              <div className="label">Size: <span className="text-ink-900 font-semibold normal-case">{size}</span></div>
+            <div className="mt-5">
+              <div className="label">
+                Size: <span className="font-semibold text-ink-900 normal-case tracking-normal">{size}</span>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {product.sizes.map((s) => (
-                  <button key={s} onClick={() => setSize(s)}
-                    className={`min-w-12 rounded-lg border px-3 py-2 text-xs font-semibold ${size === s ? 'border-ink-900 bg-ink-900 text-white' : 'border-ink-200 hover:border-ink-400'}`}>
+                  <button
+                    key={s}
+                    onClick={() => setSize(s)}
+                    className={`min-w-[3rem] rounded-lg border px-3 py-2.5 text-xs font-semibold uppercase tracking-wide transition ${
+                      size === s
+                        ? 'border-ink-900 bg-ink-900 text-white'
+                        : 'border-ink-200 text-ink-800 hover:border-ink-400'
+                    }`}
+                  >
                     {s}
                   </button>
                 ))}
@@ -140,42 +183,61 @@ export default function ProductDetail() {
             </div>
           )}
 
-          <div className="mt-6 flex items-center gap-3">
-            <div className="inline-flex items-center rounded-xl border border-ink-200">
-              <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="px-3 py-2">−</button>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <div className="inline-flex items-center rounded-full border border-ink-200">
+              <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="tap-target grid place-items-center px-4">−</button>
               <span className="w-10 text-center text-sm font-semibold">{qty}</span>
-              <button onClick={() => setQty((q) => Math.min(product.stock || 50, q + 1))} className="px-3 py-2">+</button>
+              <button onClick={() => setQty((q) => Math.min(product.stock || 50, q + 1))} className="tap-target grid place-items-center px-4">+</button>
             </div>
-            <span className="text-xs text-ink-500">{product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}</span>
+            <span className="text-xs text-ink-500">
+              {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+            </span>
           </div>
 
-          <div className="mt-5 flex flex-wrap gap-3">
-            <button onClick={addToCart} disabled={product.stock === 0} className="btn-primary flex-1 min-w-[180px]">
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <button
+              onClick={addToCart}
+              disabled={product.stock === 0}
+              className="btn-primary w-full"
+            >
               {added ? <><Check className="h-4 w-4" /> Added</> : <><ShoppingBag className="h-4 w-4" /> Add to cart</>}
             </button>
-            <button onClick={buyNow} disabled={product.stock === 0} className="btn-accent flex-1 min-w-[180px]">
+            <button
+              onClick={buyNow}
+              disabled={product.stock === 0}
+              className="btn-accent w-full"
+            >
               Buy now
             </button>
-            <button className="btn-outline !px-3" onClick={async () => {
-              if (!user) return nav('/login')
-              await api.post('/wishlist/toggle', { product_id: product.id })
-            }}>
-              <Heart className="h-4 w-4" />
+            <button
+              className="btn-outline w-full sm:col-span-2"
+              onClick={async () => {
+                if (!user) return nav('/login')
+                await api.post('/wishlist/toggle', { product_id: product.id })
+              }}
+            >
+              <Heart className="h-4 w-4" /> Save to wishlist
             </button>
           </div>
 
-          <div className="mt-6 grid gap-2 rounded-xl bg-ink-50 p-4 text-sm">
-            <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-ink-500" /> Free shipping over $100</div>
+          <div className="mt-6 grid gap-2 rounded-2xl border border-ink-100 bg-ink-50 p-4 text-sm">
+            <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-ink-500" /> Complimentary shipping over $100</div>
             <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-ink-500" /> 30-day returns</div>
           </div>
         </div>
       </div>
 
-      <div className="mt-16">
-        <div className="flex gap-6 border-b border-ink-200 text-sm">
+      {/* Tabs */}
+      <div className="mt-14 sm:mt-20">
+        <div className="flex gap-6 overflow-x-auto border-b border-ink-200 text-sm scrollbar-hide sm:gap-8">
           {['details', 'reviews'].map((t) => (
-            <button key={t} onClick={() => setTab(t)}
-              className={`relative pb-3 font-semibold capitalize transition ${tab === t ? 'text-ink-900' : 'text-ink-500'}`}>
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`relative whitespace-nowrap pb-3 font-semibold capitalize transition ${
+                tab === t ? 'text-ink-900' : 'text-ink-500'
+              }`}
+            >
               {t} {t === 'reviews' && <span className="text-ink-400">({product.rating_count})</span>}
               {tab === t && <span className="absolute -bottom-px left-0 right-0 h-0.5 bg-ink-900" />}
             </button>
@@ -184,45 +246,51 @@ export default function ProductDetail() {
 
         <div className="mt-6">
           {tab === 'details' && (
-            <div className="prose max-w-none text-sm text-ink-700">
-              <p className="whitespace-pre-wrap">{product.description}</p>
+            <div className="prose max-w-3xl text-sm text-ink-700 sm:text-base">
+              <p className="whitespace-pre-wrap leading-relaxed">{product.description}</p>
               {product.material && <p><strong>Material:</strong> {product.material}</p>}
               {product.gender && <p><strong>Fit:</strong> {product.gender}</p>}
               {product.sku && <p className="text-xs text-ink-500">SKU: {product.sku}</p>}
             </div>
           )}
           {tab === 'reviews' && (
-            <div className="grid gap-8 md:grid-cols-[1fr_320px]">
+            <div className="grid gap-8 md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px]">
               <div className="space-y-5">
-                {product.reviews?.length === 0 && <p className="text-sm text-ink-500">No reviews yet — be the first.</p>}
+                {product.reviews?.length === 0 && (
+                  <p className="text-sm text-ink-500">No reviews yet — be the first.</p>
+                )}
                 {product.reviews?.map((r) => (
                   <div key={r.id} className="card p-5">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
                       <div className="flex items-center gap-3">
                         <div className="grid h-9 w-9 place-items-center rounded-full bg-ink-900 text-sm font-semibold text-white">
                           {r.user?.name?.[0] || 'U'}
                         </div>
                         <div>
                           <div className="text-sm font-semibold">{r.user?.name}</div>
-                          {r.is_verified_purchase && <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-700">Verified purchase</div>}
+                          {r.is_verified_purchase && (
+                            <div className="text-[10px] font-bold uppercase tracking-luxe text-emerald-700">
+                              Verified purchase
+                            </div>
+                          )}
                         </div>
                       </div>
                       <Stars value={r.rating} size={14} />
                     </div>
                     {r.title && <h4 className="mt-3 font-semibold">{r.title}</h4>}
-                    {r.body && <p className="mt-1 text-sm text-ink-700">{r.body}</p>}
+                    {r.body && <p className="mt-1 text-sm leading-relaxed text-ink-700">{r.body}</p>}
                   </div>
                 ))}
               </div>
-              <form onSubmit={submitReview} className="card sticky top-24 h-fit p-5">
-                <h3 className="font-semibold">Write a review</h3>
+              <form onSubmit={submitReview} className="card h-fit p-5 md:sticky md:top-28">
+                <h3 className="font-display text-lg font-semibold">Write a review</h3>
                 <p className="mt-1 text-xs text-ink-500">{user ? '' : 'Sign in to leave a review.'}</p>
                 <div className="mt-3">
                   <div className="label">Rating</div>
                   <div className="flex gap-1">
                     {[1,2,3,4,5].map((n) => (
                       <button type="button" key={n} onClick={() => setReviewForm({ ...reviewForm, rating: n })}>
-                        <Star className={`h-6 w-6 ${n <= reviewForm.rating ? 'fill-amber-400 text-amber-400' : 'text-ink-200'}`} />
+                        <Star className={`h-6 w-6 ${n <= reviewForm.rating ? 'fill-accent-400 text-accent-400' : 'text-ink-200'}`} />
                       </button>
                     ))}
                   </div>
@@ -245,9 +313,10 @@ export default function ProductDetail() {
       </div>
 
       {related.length > 0 && (
-        <div className="mt-20">
-          <h2 className="text-2xl font-bold">You may also like</h2>
-          <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-4">
+        <div className="mt-16 sm:mt-24">
+          <span className="eyebrow">You may also like</span>
+          <h2 className="mt-2 display-2">More to discover</h2>
+          <div className="mt-6 grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 md:grid-cols-4">
             {related.map((p) => <ProductCard key={p.id} product={p} />)}
           </div>
         </div>
