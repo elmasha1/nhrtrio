@@ -4,6 +4,7 @@ import { useAuth } from './store/auth'
 
 import SiteLayout from './layouts/SiteLayout'
 import AdminLayout from './layouts/AdminLayout'
+import DocumentTitle from './components/DocumentTitle'
 
 import Home from './pages/Home'
 import Shop from './pages/Shop'
@@ -44,7 +45,9 @@ export default function App() {
   useEffect(() => { refresh() }, [refresh])
 
   return (
-    <Routes>
+    <>
+      <DocumentTitle />
+      <Routes>
       <Route element={<SiteLayout />}>
         <Route index element={<Home />} />
         <Route path="/shop" element={<Shop />} />
@@ -83,6 +86,7 @@ export default function App() {
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+      </Routes>
+    </>
   )
 }

@@ -8,6 +8,7 @@ import { money } from '../lib/format'
 import Stars from '../components/Stars'
 import ProductCard from '../components/ProductCard'
 import Loader from '../components/Loader'
+import useTitle from '../lib/useTitle'
 
 export default function ProductDetail() {
   const { slug } = useParams()
@@ -36,6 +37,8 @@ export default function ProductDetail() {
     })
     api.get(`/products/${slug}/related`).then((r) => setRelated(r.data))
   }, [slug])
+
+  useTitle(product?.name)
 
   if (!product) return <Loader />
 
